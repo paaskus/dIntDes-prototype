@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Shower</title>
+		<meta charset="UTF-8">
+		<link rel="icon" href="favicon.png" sizes="16x16 32x32 64x64 128x128" type="image/png">
+		<link rel="stylesheet" href="style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<script src="https://code.jquery.com/jquery-2.1.3.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="script.js"></script>
+	</head>
+	<body>
+		<div id="viewWrapper">
+			
+			<div id="timeWrapper" class="infoWrapper">
+				<h2 id="timeHeading" class="infoHeading">Time Used</h2>
+				<p id="timeTeller" class="infoText"><span id="hours"></span><span id="minutes"></span><span id="seconds">0s</span></p>
+			</div>
+
+			<div id="waterWrapper" class="infoWrapper">
+				<h2 id="waterHeading" class="infoHeading">Water Used</h2>
+				<p id="literTeller" class="infoText"><span id="liters">0</span> L</p>
+			</div>
+
+			<div id="temperatureWrapper" class="infoWrapper">
+				<h2 id="temperatureHeading" class="infoHeading">Temperature</h2>
+				<p id="temperatureTeller" class="infoText"><span id="temperature">37</span>&deg;</p>
+			</div>
+
+			<div id="waterflowWrapper" class="infoWrapper">
+				<h2 id="waterflowHeading" class="infoHeading">Waterflow</h2>
+				<p id="waterflowTeller" class="infoText"><span id="waterflow">50</span> %</p>
+			</div>
+
+		</div>
+		<div id="controls">
+			<h3 id="controlsHeading">CONTROLS</h3>
+			<p id="controlsDescription">NOT A PART OF ACTUAL DESIGN</p>
+
+			<div id="temperatureControl" class="controlSegment">
+				<button id="temperaturePlus" class="plusButton controlButton" type="button">WARMER</button>
+				<button id="temperatureMinus" class="minusButton controlButton" type="button">COLDER</button>
+			</div>
+
+			<div id="waterflowControl" class="controlSegment">
+				<button id="waterflowPlus" class="plusButton controlButton" type="button">MORE WATER</button>
+				<button id="waterflowMinus" class="minusButton controlButton" type="button">LESS WATER</button>
+			</div>
+
+			<div id="showerControl" class="controlSegment">
+				<button id="stop" class="controlButton" type="button">STOP</button>
+			</div>
+
+		</div>
+	</body>
+</html>

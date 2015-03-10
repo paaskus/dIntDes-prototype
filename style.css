@@ -1,0 +1,247 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #1A1A1A;
+	font-family: Arial, sans-serif;
+}
+
+/* START */
+
+#startButton {
+	display: block;
+	font-size: 100px;
+	color: #fff;
+	text-decoration: none;
+	width: 500px;
+	text-align: center;
+	padding: 20px;
+	background-color: green;
+	border-radius: 10px;
+	margin: 20% auto;
+}
+
+#startButton:hover {
+	opacity: 0.8;
+}
+
+#startButton:active {
+	opacity: 0.6;
+}
+
+/* SHOWER */
+
+#viewWrapper {
+	width: 100%;
+	float: left;
+	clear: both;
+	height: 100%;
+}
+
+.infoWrapper {
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	padding: 30px;
+	width: 50%;
+	float: left;
+	border: 5px solid white;
+	border-collapse: collapse;
+	text-align: center;
+	color: #fff;
+	min-width: 400px;
+}
+
+.infoWrapper:hover {
+	background-color: #fff;
+	color: #1A1A1A;
+}
+
+.infoHeading {
+	font-size: 50px;
+	margin-bottom: 20px;
+}
+
+.infoText {
+	font-size: 100px;
+}
+
+/* CONTROL */
+
+#controls {
+	width: 100%;
+	float: left;
+	clear: both;
+}
+
+#controlsHeading {
+	width: 200px;
+	text-align: center;
+	margin: 10px auto;
+	color: red;
+	font-size: 25px;
+	height: 20px;
+}
+
+#controlsDescription {
+	color: red;
+	font-size: 15px;
+	display: block;
+	margin: 10px auto;
+	width: 300px;
+	text-align: center;
+}
+
+.controlSegment {
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	width: 50%;
+	min-width: 400px;
+	float: left;
+	text-align: center;
+	color: green;
+}
+
+#temperatureControl {
+	border-right: 5px solid #1A1A1A;
+}
+
+#waterflowControl {
+	border-left: 5px solid #1A1A1A;
+}
+
+#showerControl {
+	width: 100%;
+	margin-top: 10px;
+}
+
+#stop {
+	background-color: red !important;
+	color: #1A1A1A;
+	border: 5px solid red !important;
+}
+
+.controlButton {
+	outline: 0;
+	border: 5px solid #fff;
+	width: 100%;
+	color: #1A1A1A;
+	float: left;
+	clear: both;
+	height: 50px;
+	color: white;
+	font-size: 30px;
+	background-color: #1A1A1A;
+	cursor: pointer;
+}
+
+.controlButton:hover {
+	/*opacity: 0.8;*/
+}
+
+.controlButton:active {
+	opacity: 0.6;
+}
+
+.plusButton {
+
+}
+
+#waterflowPlus {
+
+}
+
+#waterflowMinus {
+	border: 5px solid #999999;
+	color: #999999;
+}
+
+#waterflowPlus:hover {
+	background-color: #fff;
+	color: #1A1A1A;
+}
+
+#waterflowMinus:hover {
+	background-color: #999999;
+	color: #1A1A1A;
+}
+
+#temperaturePlus {
+	background-color: #1A1A1A;
+	border: 5px solid red;
+	color: red;
+}
+
+#temperaturePlus:hover {
+	background-color: red;
+	color: #1A1A1A;
+}
+
+#temperatureMinus {
+	background-color: #1A1A1A;
+	border: 5px solid #0044A8;
+	color: #0044A8;
+}
+
+#temperatureMinus:hover {
+	background-color: #0044A8;
+	color: #1A1A1A;
+}
+
+/* STATS */
+
+.statBar {
+	display: inline-block;
+	float: left;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	background-color: white;
+}
+
+.statBar:hover {
+	background-color: #55A245 !important;
+	color: white !important;
+	cursor: pointer;
+}
+
+.innerStatBar {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	background-color: white;
+}
+
+.innerStatBar:hover {
+	background-color: #55A245 !important;
+	color: white !important;
+	cursor: pointer;
+}
+
+.statName {
+	display: block;
+	color: #1A1A1A;
+	font-size: 20px;
+	margin-top: 50px;
+	text-align: center;
+	font-weight: bold;
+	width: 100%;
+}
+
+#statsContainer {
+	border-top: 2px solid white;
+}
+
+#consumption {
+	color: #55A245;
+	font-size: 50px;
+}
+
+#specifier {
+	display: inline-block;
+	padding: 2px 5px;
+	border-radius: 4px;
+	background-color: #55A245;
+	margin-bottom: 10px;
+}
