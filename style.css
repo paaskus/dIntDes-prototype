@@ -20,7 +20,7 @@ body {
 	padding: 20px;
 	background-color: green;
 	border-radius: 10px;
-	margin: 20% auto;
+	margin: 10% auto 50px auto;
 }
 
 #startButton:hover {
@@ -29,6 +29,38 @@ body {
 
 #startButton:active {
 	opacity: 0.6;
+}
+
+#howToHeading {
+	font-size: 50px;
+	color: #fff;
+	margin: 50px 0;
+	width: 100%;
+	text-align: center;
+}
+
+.link {
+	text-decoration: none;
+	border-bottom: 5px solid #fff;
+	padding-bottom: 5px;
+	color: #fff;
+}
+
+.link:hover {
+	text-decoration: none;
+	border-bottom: 5px solid red;
+	padding-bottom: 5px;
+	color: #fff;
+}
+
+.howToImage {
+	max-width: 90%;
+	float: none;
+	clear: both;
+	display: block;
+	width: 600px;
+	margin: 20px auto;
+	min-width: 50%;
 }
 
 /* SHOWER */
