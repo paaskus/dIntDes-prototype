@@ -57,7 +57,7 @@ $(document).ready(function() {
 	var updateWaterUsage = function() {
 		litres += 0.075 * waterflow;
 
-		console.log("litres: " + litres);
+		console.log("litres: " + Math.floor(litres));
 	}
 
 	var setWater = function() {
@@ -75,7 +75,7 @@ $(document).ready(function() {
 		var litresString = litres.toString().substring(0, litresCounter + 3);
 		var waterflowString = Math.floor((waterflow * 100)).toString();
 
-		$('#liters').html(litresString);
+		$('#litres').html(litresString);
 		$('#waterflow').html(waterflowString);
 	}
 
@@ -115,7 +115,20 @@ $(document).ready(function() {
 	var setWaterInterval = setInterval(setWater, 500);
 
 	// STOP
+	var familyData = {"familyMembers":[
+	    {"name": "Mom", "waterCons": "267", "avgTemp": "41", "avgTime": "16"}, 
+	    {"name": "Dad", "waterCons": "221", "avgTemp": "38", "avgTime": "12"},
+	    {"name": "Son1", "waterCons": "239", "avgTemp": "39", "avgTime": "13"},
+	    {"name": "Son2", "waterCons": "175", "avgTemp": "39", "avgTime": "9"},
+	    {"name": "You", "waterCons": "189", "avgTemp": "40", "avgTime": "10"},
+	    {"name": "Daughter", "waterCons": "211", "avgTemp": "38", "avgTime": "11"}
+	]};
+
 	var bars = new Array();
+
+	var containingBar;
+	var innerBar;
+
 	var highestBarValue = 0;
 
 	var container = document.createElement('div');
@@ -161,52 +174,76 @@ $(document).ready(function() {
 		container.setAttribute('id', 'statsContainer');
 		$('body').append(container);
 
-		$(container).append(new bar(247, "Mom", false).bar);
-		$(container).append(new bar(231, "Dad", false).bar);
-		$(container).append(new bar(289, "Son1", false).bar);
-		$(container).append(new bar(175, "Son2", false).bar);
+		$(container).append(new bar(0).bar);
+		$(container).append(new bar(1).bar);
+		$(container).append(new bar(2).bar);
+		$(container).append(new bar(3).bar);
 
-		// Special case: "Your" bar
-		var youBarValue = 179;
+		// Important sequence
+		innerBar = new innerBar(4);
+		containingBar = new containingBar();
 
-		var yourBarContainer = new bar(youBarValue + litres, "You", false).bar;
-		$(yourBarContainer).html(''); // clear any content
-		$(yourBarContainer).css({'background-color': 'green'});
+		// Append containingBar
+		$(container).append(containingBar.bar);
+		
+		// Append innerBar to containingBar id #4
+		$(containingBar.bar).append(innerBar.bar);
 
-		var yourBar = new bar(youBarValue, "You", true).bar;
-		$(yourBar).removeClass();
-		$(yourBar).addClass('innerStatBar');
-
-		$(yourBarContainer).append(yourBar);
-		$(container).append(yourBarContainer);
-
-		$(container).append(new bar(211, "Daughter", false).bar);
+		// Append the last bar
+		$(container).append(new bar(5).bar);
 
 		$(infoBox).css({'width': '50%', 'margin': '0 auto', 'color': '#fff', 'font-size': '20px', 'margin-top': 0.02 * windowHeight + 'px', 'border': '2px solid white', 'padding': '10px'});
 		$('body').append(infoBox);
 
-		showInfo();
+		// Showing info for the given user
+		showInfo(4);
 
 		var totalConsumption = 0;
 		for (var i = 0; i < bars.length; i++) {
+			console.log("Value for bar "+i+": " + bars[i].value);
 			totalConsumption += bars[i].value;
 		}
 
 		$(heading).html("Total water consumption (last 7 days)" + '<br /><span id="consumption">' + Math.floor(totalConsumption) + ' L</span>');
 
 		updateBars();
+
+		// Bar click-handler
+		$('.statBar').click(function() {
+			var index = null;
+			var childrenOfParent = $(this).parent().children();
+			for (var i = 0; i < childrenOfParent.length; i++) {
+				if (childrenOfParent[i] === this) {
+					index = i;
+					console.log(index);
+					showInfo(index);
+				}
+			}
+		});
+
+		$('#innerStatBar').click(function() {
+			var index = null;
+			var childrenOfParent = $(this).parent().parent().children();
+			//console.log(childrenOfParent);
+			for (var i = 0; i < childrenOfParent.length; i++) {
+				if (childrenOfParent[i].id === 'containingStatBar') {
+					index = i;
+					console.log(index);
+					showInfo(index);
+				}
+			}
+		});
 	}
 
-	var idCounter = 0;
-
-	function bar(value, name, you) {
+	function bar(familyMemberID) {
+		this.id = familyMemberID;
 		this.bar = document.createElement('div');
 		this.name = document.createElement('p');
-		this.name.appendChild(document.createTextNode(name));
+		this.name.appendChild(document.createTextNode(familyData.familyMembers[familyMemberID].name));
 
 		this.bar.appendChild(this.name);
 
-		this.value = value;
+		this.value = parseInt(familyData.familyMembers[familyMemberID].waterCons);
 		this.heightPercent = this.value / Math.max(highestBarValue, this.value);
 		this.height = this.heightPercent * containerHeight;
 		this.width = containerWidth;
@@ -221,8 +258,6 @@ $(document).ready(function() {
 						  'word-wrap': 'break-word'});
 
 		this.bar.setAttribute('class', 'statBar');
-		this.bar.setAttribute('id', idCounter.toString());
-		idCounter++;
 
 		if (this.value > highestBarValue) {
 			highestBarValue = this.value;
@@ -230,13 +265,73 @@ $(document).ready(function() {
 
 		updateBars();
 
-		$(this.bar).css({'background-color': '#fff', 'width': this.width + 'px', 'height': this.height + 'px',
+		$(this.bar).css({'width': this.width + 'px', 'height': this.height + 'px',
 						 'margin-top': this.marginTop + 'px', 'margin-left': this.marginLeft + 'px'});
+		bars.push(this);
+	}
 
-		if (you) {
-			$(this.bar).css('background-color', 'yellow');
-			this.you = true;
+	function containingBar() {
+		this.bar = document.createElement('div');
+
+		this.value = innerBar.value + litres;
+		this.heightPercent = this.value / Math.max(highestBarValue, this.value);
+		this.height = this.heightPercent * containerHeight;
+		this.width = containerWidth;
+		this.marginTop = containerHeight - this.height;
+		this.marginLeft = 0;
+
+		if (bars[bars.length - 1]) {
+			this.marginLeft = barMarginLeft;
 		}
+
+		$(this.name).css({'width': '100%', 'margin': '0 auto', 'text-align': 'center',
+						  'word-wrap': 'break-word'});
+
+		this.bar.setAttribute('id', 'containingStatBar');
+
+		if (this.value > highestBarValue) {
+			highestBarValue = this.value;
+		}
+
+		updateBars();
+
+		$(this.bar).css({'width': this.width + 'px', 'height': this.height + 'px',
+						 'margin-top': this.marginTop + 'px', 'margin-left': this.marginLeft + 'px'});
+		bars.push(this);
+	}
+
+	function innerBar(familyMemberID) {
+		this.id = familyMemberID;
+		this.bar = document.createElement('div');
+		this.name = document.createElement('p');
+		this.name.appendChild(document.createTextNode(familyData.familyMembers[familyMemberID].name));
+
+		this.bar.appendChild(this.name);
+
+		this.value = parseInt(familyData.familyMembers[familyMemberID].waterCons);
+		this.heightPercent = this.value / Math.max(highestBarValue, this.value);
+		this.height = this.heightPercent * containerHeight;
+		this.width = containerWidth;
+		this.marginTop = containerHeight - this.height;
+		this.marginLeft = 0;
+
+		if (bars[bars.length - 1]) {
+			this.marginLeft = barMarginLeft;
+		}
+
+		$(this.name).css({'width': '100%', 'margin': '0 auto', 'text-align': 'center',
+						  'word-wrap': 'break-word'});
+
+		this.bar.setAttribute('id', 'innerStatBar');
+
+		if (this.value > highestBarValue) {
+			highestBarValue = this.value;
+		}
+
+		updateBars();
+
+		$(this.bar).css({'width': this.width + 'px', 'height': this.height + 'px',
+						 'margin-top': this.marginTop + 'px', 'margin-left': this.marginLeft + 'px'});
 		bars.push(this);
 	}
 
@@ -255,24 +350,27 @@ $(document).ready(function() {
 		for (var i = 0; i < bars.length; i++) {
 			bars[i].heightPercent = bars[i].value / highestBarValue
 			var height = bars[i].heightPercent;
-			height = height * containerHeight - 20;
+				height = height * containerHeight - 20;
 			var width = calculateBarWidth(i);
 			var marginTop = containerHeight - height;
 			var marginLeft = 0;
 
-			if (i > 0) {
+			// Special case for innerBar
+			if (bars[i] === innerBar) {
+				marginTop = (containingBar.heightPercent * containerHeight - 20) - height;
+			}
+
+			// Only apply left-margin if of type 'bar' or 'containingBar'
+			if (i > 0 && bars[i] != innerBar) {
 				marginLeft = barMarginLeft;
 			}
 
 			var fontSize = Math.max(width / 6, 10);
 
+			// Update dimensions and margins of bars
 			$(bars[i].bar).css({'width': width + 'px', 'height': height + 'px', 'margin-top': marginTop + 'px', 'margin-left': marginLeft + 'px'});
 
-			if (bars[i].you) {
-				$(bars[i].bar).css({'width': width + 'px', 'height': height + 'px', 'margin-top': ((bars[i - 1].heightPercent * containerHeight - 20) - height) + 'px', 'margin-left': 0 + 'px'});
-			}
-
-			// Update text-sizing
+			// Update text-sizing inside bars
 			$(bars[i].name).css({'padding-top': 0.2 * height + 'px', 'font-size': fontSize + 'px'});
 		}
 	}
@@ -288,24 +386,30 @@ $(document).ready(function() {
 		return width;
 	}
 
-	function showInfo() {
+	function showInfo(barID) {
+		var waterCons = familyData.familyMembers[barID].waterCons;
+		var avgTemp = familyData.familyMembers[barID].avgTemp;
+		var avgTime = familyData.familyMembers[barID].avgTime;
+		var score = Math.floor((1000 / (waterCons / highestBarValue / 2)) / (avgTemp / 5));
+
+		$(infoBox).empty();
 		var heading = document.createElement('h2');
-		$(heading).html('Showing information for <b><i id="specifier">You</i></b>');
+		$(heading).html('Showing information for <b><i id="specifier">' + familyData.familyMembers[barID].name + '</i></b>');
 		var text = document.createElement('p');
-		$(text).html('<b>Water consumption (last 7 days):</b> ' + 271 + ' L');
+		$(text).html('<b>Water consumption (last 7 days):</b> ' + waterCons + ' L');
 		$(infoBox).append(heading);
 		$(infoBox).append(text);
 
 		var text2 = document.createElement('p');
-		$(text2).html('<b>Avg. temperature:</b> ' + 37 + ' &deg;');
+		$(text2).html('<b>Avg. temperature:</b> ' + avgTemp + ' C&deg;');
 		$(infoBox).append(text2);
 
 		var text3 = document.createElement('p');
-		$(text3).html('<b>Avg. time spent:</b> ' + 12 + ' minutes');
+		$(text3).html('<b>Avg. time spent:</b> ' + avgTime + ' minutes');
 		$(infoBox).append(text3);
 
 		var text4 = document.createElement('p');
-		$(text4).html('<b>WaterSaver score:</b> ' + 873 + ' points');
+		$(text4).html('<b>WaterSaver score:</b> ' + score + ' points');
 		$(infoBox).append(text4);
 
 		var text5 = document.createElement('p');
